@@ -1,0 +1,23 @@
+type Order {
+  _id: String!
+  user: String!
+  code: String!
+  amount: Int!
+  interestRate: Float!
+  accruedAmount: [Int]
+}
+
+type Query {
+  orders(user: String!): [Order!]!
+  order(id: String!): Order!
+}
+
+type Mutation {
+  createOrder(createOrderInput: CreateOrderInput!): Order!
+}
+
+input CreateOrderInput {
+  user: String!
+  amount: Int!
+  interestRate: Float!
+}

@@ -1,73 +1,129 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## 1. Run project
+To make sure that there are no errors that relate to NodeJS version happens on local machine, I created a docker-compose.yaml file which contains a both web-app and postgres-database components. So, just type that command "docker-compose up -d" to run the code.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+* Note: Please make sure that docker has already been installed on your local machine.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 2. GraphQL API Endpoints:
 
-## Description
+* Note: After started project, you can use GraphQL tool to run the following APIs by accesing to this link: http://localhost:3000/graphql (Local link).
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+——— USER ———
 
-## Installation
+* Create User:
 
-```bash
-$ npm install
+mutation {
+	createUser(createUserInput: { 
+    fullName: "steven", 
+    phone: "0334567891",
+    gender: "male",
+    age: 22
+  })
+  {
+    _id
+    fullName
+    phone
+    age
+    gender
+    totalAmount
+  }
+}
+
+* Update User Information:
+
+mutation {
+	updateUser(updateUserInput: {
+    _id: "<user id>",
+    fullName: "steven", 
+    phone: "0334567891",
+    gender: "male",
+    age: 22
+  })
+  {
+    _id
+    fullName
+    phone
+    age
+    gender
+    totalAmount
+  }
+}
+
+* Get User Detail:
+
+query {
+	user(id: "<user id>") {
+    _id
+    fullName
+    phone
+    age
+    gender
+    totalAmount
+  }
+}
+
+——— ORDER ———
+
+* Create Order:
+
+mutation {
+	createOrder(createOrderInput: {
+    user: "<user id>", 
+    amount: 500,
+    interestRate: 1
+  })
+  {
+    _id
+    user
+    code
+    amount
+    interestRate
+    accruedAmount
+  }
+}
+
+* Get User's orders
+
+query {
+	orders(user: "<user id>") {
+    _id
+    user
+    code
+    amount
+    interestRate
+    accruedAmount
+  }
+}
+
+
+* Get Order Detail:
+
+query {
+	order(id: "<order id>") {
+    _id
+    user
+    code
+    amount
+    interestRate
+    accruedAmount
+  }
+}
+
+## DB SCHEMA
+
 ```
+users ( 
+  _id ObjectId (Primary Key)
+  fullName String
+  phone String
+  age Number
+  gender String (Enum: ["male", "female", "other"])
+); 
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+orders ( 
+    _id ObjectId (Primary Key)
+    user ObjectId (FK)
+    code String
+    amount Number
+    interestRate Number
+)
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

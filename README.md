@@ -1,5 +1,5 @@
 ## 1. Run project
-To make sure that there are no errors that relate to NodeJS version happens on local machine, I created a docker-compose.yaml file which contains a both web-app and postgres-database components. So, just type that command "docker-compose up -d" to run the code.
+To make sure that there are no errors that relate to NodeJS version happens on local machine, I created a docker-compose.yaml file which contains a both web and mongodb components. So, just type that command "docker-compose up -d" at the root folder to start these components.
 
 * Note: Please make sure that docker has already been installed on your local machine.
 
@@ -9,10 +9,11 @@ To make sure that there are no errors that relate to NodeJS version happens on l
 
 ——— USER ———
 
-* Create User:
+#### Create User:
 
+```
 mutation {
-	createUser(createUserInput: { 
+  createUser(createUserInput: { 
     fullName: "steven", 
     phone: "0334567891",
     gender: "male",
@@ -27,11 +28,13 @@ mutation {
     totalAmount
   }
 }
+```
 
-* Update User Information:
+#### Update User Information:
 
+```
 mutation {
-	updateUser(updateUserInput: {
+   updateUser(updateUserInput: {
     _id: "<user id>",
     fullName: "steven", 
     phone: "0334567891",
@@ -47,11 +50,13 @@ mutation {
     totalAmount
   }
 }
+```
 
-* Get User Detail:
+#### Get User Detail:
 
+```
 query {
-	user(id: "<user id>") {
+   user(id: "<user id>") {
     _id
     fullName
     phone
@@ -60,13 +65,15 @@ query {
     totalAmount
   }
 }
+```
 
 ——— ORDER ———
 
-* Create Order:
+#### Create Order:
 
+```
 mutation {
-	createOrder(createOrderInput: {
+  createOrder(createOrderInput: {
     user: "<user id>", 
     amount: 500,
     interestRate: 1
@@ -80,11 +87,13 @@ mutation {
     accruedAmount
   }
 }
+```
 
-* Get User's orders
+#### Get User's orders
 
+```
 query {
-	orders(user: "<user id>") {
+   orders(user: "<user id>") {
     _id
     user
     code
@@ -93,12 +102,13 @@ query {
     accruedAmount
   }
 }
+```
 
+#### Get Order Detail:
 
-* Get Order Detail:
-
+```
 query {
-	order(id: "<order id>") {
+  order(id: "<order id>") {
     _id
     user
     code
@@ -107,6 +117,7 @@ query {
     accruedAmount
   }
 }
+```
 
 ## DB SCHEMA
 

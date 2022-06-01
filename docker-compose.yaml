@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  web:
+    container_name: web
+    build: .
+    environment:
+      - MONGODB_URI=mongodb://mongodb/infina
+    networks:
+    - todo
+    ports:
+    - "3000:3000"
+    depends_on:
+      - mongodb
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:4.4.5
+    ports:
+      - 27018:27017
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=infina
+    networks:
+    - todo
+
+volumes:
+  mongodb_data:
+
+networks:
+  todo:
+    driver: bridge

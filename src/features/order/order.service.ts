@@ -1,7 +1,8 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Model, Connection } from 'mongoose';
-import { User, UserDocument, UserSchema } from '../user/entities/user.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { CommonUtils } from 'src/utils/common.utils';
+import { User, UserDocument } from '../user/entities/user.entity';
 import { CreateOrderInput } from './dto/create-order.input';
 import { Order, OrderDocument } from './entities/order.entity';
 import { OrderType } from './types/order.types';
@@ -10,20 +11,16 @@ import { OrderType } from './types/order.types';
 export class OrderService {
   constructor(
     @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>,
-    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-    @InjectConnection() private readonly connection: Connection
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>
   ){}
 
   async create(createOrderInput: CreateOrderInput): Promise<OrderType> {
-    try {
-      const randomDigitNumber = Math.floor(Math.random() * 90000) + 10000;
-
       const user = await this.userModel.findById(createOrderInput.user);
       if(!user) {
         throw new NotFoundException(`User with id ${createOrderInput.user} does not exist`);
       }
 
-      const newOrder = await this.orderModel.create({ ...createOrderInput, code: randomDigitNumber.toString() });
+      const newOrder = await this.orderModel.create({ ...createOrderInput, code: CommonUtils.generate5DigitRandom() });
       if(!newOrder) {
         throw new InternalServerErrorException('Create order failed');
       }
@@ -32,9 +29,6 @@ export class OrderService {
       await user.save();
 
       return newOrder;
-    } catch(err) {
-      return err;
-    }
   }
   
   async findAllByUserId(userId: string): Promise<OrderType[]> {

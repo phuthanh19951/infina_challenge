@@ -138,3 +138,5 @@ orders (
     interestRate Number
 )
 ```
+
+## Note: Because the deadline of the tech challenge too short so i'm missing unit test for almost parts of coding.

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {Document, Schema as MongooseSchema} from 'mongoose';
-import { Order, OrderSchema } from 'src/features/order/entities/order.entity';
+import { Order } from '../../order/entities/order.entity';
 import { Gender } from '../user.enum';
 
 @Schema({

@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CommonUtils } from 'src/utils/common.utils';
+import { CommonUtils } from '../../utils/common.utils';
 import { User, UserDocument } from '../user/entities/user.entity';
 import { CreateOrderInput } from './dto/create-order.input';
 import { Order, OrderDocument } from './entities/order.entity';
@@ -32,11 +32,21 @@ export class OrderService {
   }
   
   async findAllByUserId(userId: string): Promise<OrderType[]> {
+    const user = await this.userModel.findById(userId);
+    if(!user) {
+      throw new NotFoundException(`User with id ${userId} does not exist`);
+    }
+
     return await this.orderModel.find({ user: userId });
   }
 
   async findOne(id: string): Promise<OrderType> {
-    return await this.orderModel.findById(id);
+    const order = await this.orderModel.findById(id);
+    if(!order) {
+      throw new NotFoundException(`Order with id ${id} does not exist`);
+    }
+
+    return order;
   }
 
   getAccruedAmount(orderAmount: number, orderInterestRate: number): Number[] {

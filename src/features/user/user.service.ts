@@ -1,7 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
-import { Order } from '../order/entities/order.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User, UserDocument } from './entities/user.entity';
@@ -18,7 +17,12 @@ export class UserService {
   }
 
   async findOne(id: string): Promise<UserType> {
-    return await this.userModel.findById(id);
+    const user = await this.userModel.findById(id);
+    if(!user) {
+      throw new NotFoundException(`User with id ${id} does not exist`);
+    }
+
+    return user;
   }
 
   async update(id: ObjectId, updateUserInput: UpdateUserInput): Promise<UserType> {

@@ -28,7 +28,7 @@ export class UserResolver {
    */
   @Query(() => User, { name: 'user' })
   async findOne(@Args('id', { type: () => String }) id: string):  Promise<UserType> {
-    return this.userService.findOne(id);
+    return await this.userService.findOne(id);
   }
 
   /**
@@ -39,7 +39,7 @@ export class UserResolver {
    */
   @Mutation(() => User)
   async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput): Promise<UserType> {
-    return this.userService.update(updateUserInput._id, updateUserInput);
+    return await this.userService.update(updateUserInput._id, updateUserInput);
   }
 
   /**

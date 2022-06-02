@@ -16,7 +16,7 @@ export class OrderResolver {
    */
   @Mutation(() => Order)
   async createOrder(@Args('createOrderInput') createOrderInput: CreateOrderInput): Promise<OrderType> {
-    return this.orderService.create(createOrderInput);
+    return await this.orderService.create(createOrderInput);
   }
 
   /**
@@ -26,8 +26,8 @@ export class OrderResolver {
    * @returns all orders of a specific user
    */
   @Query(() => [Order], { name: 'orders' })
-  findAllOrderByUser(@Args('user', { type: () => String }) user: string): Promise<OrderType[]> {
-    return this.orderService.findAllByUserId(user);
+  async findAllOrderByUser(@Args('user', { type: () => String }) user: string): Promise<OrderType[]> {
+    return await this.orderService.findAllByUserId(user);
   }
 
   /**
@@ -37,8 +37,8 @@ export class OrderResolver {
    * @returns Order detail
    */
   @Query(() => Order, { name: 'order' })
-  findOne(@Args('id', { type: () => Int }) id: string): Promise<OrderType> {
-    return this.orderService.findOne(id);
+  async findOne(@Args('id', { type: () => Int }) id: string): Promise<OrderType> {
+    return await this.orderService.findOne(id);
   }
 
   /**
